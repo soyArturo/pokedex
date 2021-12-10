@@ -1,0 +1,10 @@
+version: '3'
+services:
+  pokedex:
+    restart: always
+    build: .
+    stdin_open: true
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - "3003:3000"
