@@ -4,8 +4,9 @@ import styled from "styled-components";
 import Moon from "./assets/img/moon.png";
 import Sun from "./assets/img/sun.png";
 import Pokeball from "./assets/img/pokeball.svg";
-import axiosClient from "./config/axios";
+import { fetchPokemonData, fetchPokemons } from "./config/axios";
 import axios from "axios";
+import Card from "./components/Card/Card";
 
 const Main = styled.div`
   display: flex;
@@ -47,6 +48,8 @@ const Logo = styled.img`
 
 const Tittle = styled.h1`
   font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
   color: ${(props) => (!props.light ? "#fff" : "#222")};
 `;
 
@@ -62,21 +65,24 @@ const Search = styled.input`
 const Container = styled.div`
   overflow-y: scroll;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
+  align-items: center;
   justify-items: center;
-  max-width: 100wv;
-  width: 90%;
-  margin: 1rem;
-  padding: 1rem;
-`;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 1rem;
+  margin: 1rem 0;
+  width: 100%;
 
-const Card = styled.div`
-  height: 200px;
-  width: 150px;
-  background-color: #fff;
+  @media screen and (min-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (min-width: 1920px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 const App = () => {
@@ -84,34 +90,33 @@ const App = () => {
     window.matchMedia?.("(prefers-color-scheme:dark)")?.matches ?? false;
   const [isDarkMode, setDarkMode] = useState(defaultDarkTheme);
   const [pokemons, setPokemons] = useState([]);
-  const [pokemonsDetails, setPokemonsDetails] = useState([]);
   const handleToggle = () => {
     setDarkMode(!isDarkMode);
     // console.log(isDarkMode);
   };
+  
 
-  const getPokemons = async () => {
-    const res = await axiosClient.get("pokemon?limit=151");
-    setPokemons(res.data.results);
-  };
-
-  const getPokemonsDetails = async (pokemons) => {
-    await axios.all(pokemons.map((pokemon) => axiosClient.get(`pokemon/${pokemon.name}/`))).then(
-      data => {
-        const new_data = data.map(item => item.data);
-        console.log(new_data);
-        setPokemonsDetails(new_data);
-      }
-    );
-  };
+  const filterPokemons = async () => {
+    setPokemons( [] );
+    fetchPokemons().then(async (res) => {
+      const newPokemons = [];
+      console.log(res.data.results);
+      await axios.all(res.data.results.map(async (pokemon, i) =>{
+        await fetchPokemonData(pokemon.name).then(async json => {
+          newPokemons[i] = json;
+        })
+      }))
+      setPokemons(newPokemons);
+    })
+  }
 
   useEffect(() => {
-    getPokemons();
+    filterPokemons();
   }, []);
 
-  useEffect(() => {
-    getPokemonsDetails(pokemons);
-  }, [pokemons]);
+  // useEffect(() => {
+  //   getPokemonsDetails(pokemons);
+  // }, [pokemons]);
   // useEffect(() => {
   //   const savedTheme = localStorage.getItem("theme");
   //   const prefersDark =
@@ -134,12 +139,16 @@ const App = () => {
       <Tittle light={!isDarkMode ? true : false}>Pokedex!</Tittle>
       <Search placeholder="Search..." />
       <Container>
-        {pokemonsDetails &&
-          pokemonsDetails.map((pokemon, i) => (
-            <Card key={pokemon.id}>
-              <img src={pokemon.sprites["front_default"]}/>
-              {pokemon.name}
-            </Card>
+        {pokemons &&
+          pokemons.map((pokemon, i) => (
+            <Card pokemon={ pokemon } key={ pokemon.id }/>
+            // <Card key={pokemon.id} light={!isDarkMode ? true : false}>
+            //   {/* <CardImage src={pokemon.sprites["front_default"]} /> */}
+            //   <CardContent light={!isDarkMode ? true : false}>
+            //     <h2>Nombre: {pokemon}</h2>
+            //     <p></p>
+            //   </CardContent>
+            // </Card>
           ))}
       </Container>
     </Main>
