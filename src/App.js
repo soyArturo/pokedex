@@ -72,11 +72,11 @@ const Container = styled.div`
   margin: 1rem 0;
   width: 100%;
 
-  @media screen and (min-width: 800px) {
+  @media screen and (min-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
