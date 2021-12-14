@@ -12,6 +12,15 @@ const PokeCard = styled.div`
   background-color: var(--color);
   /* box-shadow: 0 0 20px 0 var(--color); */
   position: relative;
+  cursor: pointer;
+  margin-top: 1rem;
+
+  @media screen and ( min-width: 1024px ){
+      &:hover {
+        transform: translateY( -5px );
+        box-shadow: 0 0 20px 5px var( --color );
+      }
+  }
 
   @media screen and (max-width: 599px) {
     width: 350px;

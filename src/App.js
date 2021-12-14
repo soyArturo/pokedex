@@ -7,6 +7,7 @@ import Pokeball from "./assets/img/pokeball.svg";
 import { fetchPokemonData, fetchPokemons } from "./config/axios";
 import axios from "axios";
 import Card from "./components/Card/Card";
+import Loader from "./components/Loader/Loader";
 
 const Main = styled.div`
   display: flex;
@@ -90,6 +91,9 @@ const App = () => {
     window.matchMedia?.("(prefers-color-scheme:dark)")?.matches ?? false;
   const [isDarkMode, setDarkMode] = useState(defaultDarkTheme);
   const [pokemons, setPokemons] = useState([]);
+  const [ selectedPokemon, setSelectedPokemon ] = useState( -1 );
+  const [ isLoading, setIsLoading ] = useState( false );
+
   const handleToggle = () => {
     setDarkMode(!isDarkMode);
     // console.log(isDarkMode);
@@ -97,6 +101,7 @@ const App = () => {
   
 
   const filterPokemons = async () => {
+    setIsLoading( true );
     setPokemons( [] );
     fetchPokemons().then(async (res) => {
       const newPokemons = [];
@@ -107,6 +112,7 @@ const App = () => {
         })
       }))
       setPokemons(newPokemons);
+      setIsLoading( false );
     })
   }
 
@@ -128,6 +134,19 @@ const App = () => {
   //     setDarkMode("dark");
   //   }
   // }, []);
+  const Content = () => {
+    if (isLoading) {
+      return <Loader />;
+    }
+    return (
+      <>
+      {pokemons &&
+        pokemons.map((pokemon, i) => (
+          <Card pokemon={ pokemon } key={ i } onClick={ () => setSelectedPokemon( i ) }/>
+        ))}
+      </>
+    );
+  }
   return (
     <Main light={!isDarkMode ? true : false}>
       <Header>
@@ -139,17 +158,8 @@ const App = () => {
       <Tittle light={!isDarkMode ? true : false}>Pokedex!</Tittle>
       <Search placeholder="Search..." />
       <Container>
-        {pokemons &&
-          pokemons.map((pokemon, i) => (
-            <Card pokemon={ pokemon } key={ pokemon.id }/>
-            // <Card key={pokemon.id} light={!isDarkMode ? true : false}>
-            //   {/* <CardImage src={pokemon.sprites["front_default"]} /> */}
-            //   <CardContent light={!isDarkMode ? true : false}>
-            //     <h2>Nombre: {pokemon}</h2>
-            //     <p></p>
-            //   </CardContent>
-            // </Card>
-          ))}
+        <Content />
+        { selectedPokemon !== -1 && <p>{pokemons[selectedPokemon]}</p>}
       </Container>
     </Main>
   );
