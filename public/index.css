@@ -1,41 +1,41 @@
 /*
     Pokemon type colors
 */
-.type-normal { --color: #C2C2A1; }
+.type-normal { --color: #919aa2; }
 
-.type-flying { --color: #BAB0D5; }
+.type-flying { --color: #8aa9da; }
 
-.type-ghost { --color: #735797; }
+.type-ghost { --color: #4c69ab; }
 
-.type-dark { --color: #333; }
+.type-dark { --color: #5a5264; }
 
-.type-steel { --color: #CCCCDE; }
+.type-steel { --color: #528ea0; }
 
-.type-ground { --color: #B1736C; }
+.type-ground { --color: #e0794a; }
 
-.type-poison { --color: #7C538C; }
+.type-poison { --color: #ad69c6; }
 
-.type-grass { --color: #48D0B0; }
+.type-grass { --color: #56bc61; }
 
-.type-fire { --color: #FB6C6C; }
+.type-fire { --color: #ff9d5d; }
 
-.type-electric { --color: #FFD86F; }
+.type-electric { --color: #f8d34f; }
 
-.type-fairy { --color: #f469a9; }
+.type-fairy { --color: #f28fe4; }
 
-.type-bug { --color: #C3CE75; }
+.type-bug { --color: #8fc13e; }
 
-.type-fighting { --color: #d6b591; }
+.type-fighting { --color: #d63d6b; }
 
-.type-water { --color: #609FB5; }
+.type-water { --color: #3f91d3; }
 
-.type-psychic { --color: #9B7FA6; }
+.type-psychic { --color: #ff717c; }
 
-.type-ice { --color: #7FCCEC; }
+.type-ice { --color: #66cfc0; }
 
-.type-rock { --color: #a6aab6; }
+.type-rock { --color: #c8b88f; }
 
-.type-dragon { --color: #F9BE00; }
+.type-dragon { --color: #006dbf; }
 
 html{
     overflow-y: hidden;

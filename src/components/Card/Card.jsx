@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const PokeCard = styled.div`
@@ -6,20 +6,26 @@ const PokeCard = styled.div`
   flex-direction: row;
   height: 300px;
   width: 440px;
-  border-radius: 10px;
-  /* padding: 1rem; */
-  /* background: linear-gradient(70deg, var(--color) 40%, var(--color) 40%); */
   background-color: var(--color);
-  /* box-shadow: 0 0 20px 0 var(--color); */
   position: relative;
   cursor: pointer;
   margin-top: 1rem;
 
-  @media screen and ( min-width: 1024px ){
-      &:hover {
-        transform: translateY( -5px );
-        box-shadow: 0 0 20px 5px var( --color );
+  @media screen and (min-width: 1024px) {
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px 5px var(--color);
+
+      & > div:nth-child(4) {
+        animation: spin 1s linear;
+
+        @keyframes spin {
+          100% {
+            transform: rotate(360deg);
+          }
+        }
       }
+    }
   }
 
   @media screen and (max-width: 599px) {
@@ -38,46 +44,43 @@ const PokeCard = styled.div`
   }
 
   @media screen and (min-width: 800px) and (max-width: 1449px) {
-    width: 380px;
+    width: 310px;
     height: 200px;
   }
 `;
 
 const SecondType = styled.div`
   position: absolute;
-  width: 220px;
-  height: 300px;
-  background: var(--color);
+  width: 0;
+  height: 0;
   z-index: 0;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-style: solid;
+  border-width: 300px 0 0 440px;
+  border-color: transparent transparent transparent var(--color);
   /* @media only screen and (min-width: 1024px) and (max-width: 1366px) {
     width: 215px;
   } */
 
   @media screen and (max-width: 799px) {
-    width: 175px;
-    height: 200px;
+    border-width: 200px 0 0 350px;
   }
 
   @media screen and (min-width: 600px) and (max-width: 767px) {
-    width: 140px;
-    height: 200px;
+    border-width: 200px 0 0 280px;
   }
 
   @media screen and (min-width: 768px) and (max-width: 799px) {
-    width: 170px;
-    height: 200px;
+    border-width: 200px 0 0 340px;
   }
 
   @media screen and (min-width: 800px) and (max-width: 1449px) {
-    width: 190px;
-    height: 200px;
+    border-width: 200px 0 0 310px;
   }
 `;
 
 const CardImage = styled.div`
   width: 50%;
+  object-fit: contain;
   align-self: flex-end;
   display: flex;
   align-items: center;
@@ -109,7 +112,7 @@ const CardContent = styled.div`
     }
 
     @media screen and (min-width: 800px) and (max-width: 1449px) {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
   }
 
@@ -129,7 +132,7 @@ const CardContent = styled.div`
       font-size: 1rem;
     }
     @media screen and (min-width: 800px) and (max-width: 1449px) {
-      font-size: 1.25rem;
+      font-size: 1rem;
     }
   }
 `;
@@ -147,6 +150,10 @@ const NoPokemon = styled.span`
   @media screen and (min-width: 768px) and (max-width: 799px) {
     font-size: 2rem;
   }
+
+  @media screen and (min-width: 800px) and (max-width: 1449px) {
+      font-size: 2rem;
+  }
 `;
 
 const Pokeball = styled.div`
@@ -154,8 +161,8 @@ const Pokeball = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  left: -10px;
-  bottom: -10px;
+  /* left: -10px;
+  bottom: -10px; */
   font-size: 10px;
   color: rgba(255, 255, 255, 0.2);
 
